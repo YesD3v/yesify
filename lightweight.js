@@ -45,7 +45,7 @@
   function applyLightweightState() {
     if (isLightweightEnabled) {
       document.documentElement.classList.add("yesify-lightweight");
-      terminateVideoDecoders();
+      pauseCanvasVideos();
       optimizeExistingImages();
       startImageObserver();
     } else {
@@ -62,19 +62,15 @@
     } catch (e) {}
   }
 
-  // Actively terminates any running video decoders to free GPU & RAM video buffers
-  function terminateVideoDecoders() {
+  // Safely pauses looping visual canvas videos without touching audio playback
+  function pauseCanvasVideos() {
     try {
-      var videos = document.querySelectorAll("video");
-      videos.forEach(function (v) {
-        if (!v.id || !v.id.includes("yesify")) {
+      var canvasVideos = document.querySelectorAll(
+        '[data-testid="canvas-container"] video, .npv-canvas-container video, video[loop][muted]'
+      );
+      canvasVideos.forEach(function (v) {
+        if (v && !v.paused && (v.muted || v.loop)) {
           v.pause();
-          v.preload = "none";
-          // If in lightweight mode, clear the video stream to release decoder hardware memory
-          if (isLightweightEnabled) {
-            v.removeAttribute("src");
-            try { v.load(); } catch (err) {}
-          }
         }
       });
     } catch (e) {}
@@ -112,10 +108,6 @@
                 var nestedImgs = node.querySelectorAll("img");
                 nestedImgs.forEach(optimizeImage);
               }
-              if (node.tagName === "VIDEO") {
-                node.pause();
-                node.preload = "none";
-              }
             }
           }
         }
@@ -147,7 +139,7 @@
       if (!isCurrentlyUnfocused) {
         isCurrentlyUnfocused = true;
         document.documentElement.classList.add("yesify-unfocused-freeze");
-        terminateVideoDecoders();
+        pauseCanvasVideos();
         notifyMainWorldFreeze(true);
       }
     } else {
@@ -181,7 +173,7 @@
   // Periodic memory sweep when in Lite Mode
   setInterval(function () {
     if (isLightweightEnabled || isCurrentlyUnfocused) {
-      terminateVideoDecoders();
+      pauseCanvasVideos();
     }
   }, 15000);
 })();

@@ -1,15 +1,15 @@
 /* ==========================================================================
    Yesify Hardcore Lightweight & Background Freeze Engine
    Crafted by yes.dev
-   Pushes Spotify Web RAM usage well below 300MB and eliminates 100% of
-   background GPU/CPU rendering cycles when unfocused.
+   Pushes Spotify Web RAM usage well below 300MB and eliminates background
+   GPU/CPU rendering cycles when unfocused without interfering with audio playback.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
    1. HARDCORE ULTRA LIGHTWEIGHT MODE (< 300MB RAM Target)
    -------------------------------------------------------------------------- */
 
-/* Flatten ALL GPU compositor layers: eliminate filters, blurs, and shadows */
+/* Flatten GPU compositor layers: eliminate heavy filters, blurs, and shadows */
 html.yesify-lightweight *,
 body.yesify-lightweight * {
   animation: none !important;
@@ -21,31 +21,32 @@ body.yesify-lightweight * {
   will-change: auto !important;
 }
 
-/* Obliterate memory-hogging Spotify subsystems:
-   - Looping Video Canvases
-   - Live Canvas containers
+/* Suppress ONLY non-audio visual background bloat:
+   - Visual video canvas streams (strictly within canvas containers)
    - Animated Lyrics Engine
    - Friend Activity feed (Right Sidebar)
-   - Now Playing right sidebar heavy cards
-   - Promotional banners and backdrop gradient meshes */
+   - Heavy promotional gradient meshes
+   CRITICAL: Never target generic `video` tags so the Widevine audio stream is preserved! */
 body.yesify-lightweight [data-testid="canvas-container"],
+body.yesify-lightweight [data-testid="canvas-container"] video,
+body.yesify-lightweight .npv-canvas-container,
+body.yesify-lightweight .npv-canvas-container video,
+body.yesify-lightweight video[loop][muted],
 body.yesify-lightweight [data-testid="lyrics-container"],
 body.yesify-lightweight [data-testid="buddy-feed-container"],
 body.yesify-lightweight [data-testid="now-playing-view"],
 body.yesify-lightweight .Root__right-sidebar,
 body.yesify-lightweight aside,
-body.yesify-lightweight video,
 body.yesify-lightweight canvas:not(#yesify-canvas),
 body.yesify-lightweight .lyrics-lyricsContainer-LyricsContainer,
-body.yesify-lightweight [data-testid="fullscreen-lyric"],
-body.yesify-lightweight [data-testid="desktop-video-player"] {
+body.yesify-lightweight [data-testid="fullscreen-lyric"] {
   display: none !important;
   visibility: hidden !important;
   content-visibility: hidden !important;
   pointer-events: none !important;
 }
 
-/* Virtualize all long scrollable tracklists, shelves, and search grids.
+/* Virtualize long scrollable tracklists, shelves, and search grids.
    Blink ONLY computes layout and paints tracks currently in the viewport!
    Off-screen elements consume almost 0 layout memory. */
 body.yesify-lightweight [data-testid="tracklist-row"],
@@ -88,39 +89,32 @@ body.yesify-lightweight img {
    2. HARDCORE OUT-OF-FOCUS FREEZE (Sound-Only Mode)
    --------------------------------------------------------------------------
    When Spotify is unfocused or in the background:
-   Freezes 100% of DOM layout recalculations, paint operations, and frame draws.
-   Audio playback thread runs on the OS audio pipeline completely unaffected.
+   Freezes DOM layout and paints of heavy visual sections.
+   The playback container and media elements remain 100% active and un-occluded.
    -------------------------------------------------------------------------- */
 
-html.yesify-unfocused-freeze body {
-  pointer-events: none !important;
-}
-
-/* Completely occlude all major DOM trees using content-visibility: hidden.
-   This tells Chromium to completely skip layout, style calculations, and painting! */
-html.yesify-unfocused-freeze .Root__top-container,
+/* Occlude background visual containers to halt GPU/CPU paints */
 html.yesify-unfocused-freeze .main-view-container,
-html.yesify-unfocused-freeze .Root__main-view,
-html.yesify-unfocused-freeze .Root__nav-bar,
 html.yesify-unfocused-freeze .Root__right-sidebar,
-html.yesify-unfocused-freeze [data-testid="now-playing-bar-container"],
-html.yesify-unfocused-freeze [data-testid="root"],
-html.yesify-unfocused-freeze #main {
+html.yesify-unfocused-freeze [data-testid="lyrics-container"],
+html.yesify-unfocused-freeze [data-testid="canvas-container"] {
   content-visibility: hidden !important;
   contain: strict !important;
 }
 
-/* Hard suspend all video decoders and canvas paints */
-html.yesify-unfocused-freeze video,
-html.yesify-unfocused-freeze canvas {
+/* Suspend canvas visual loops */
+html.yesify-unfocused-freeze canvas:not(#yesify-canvas),
+html.yesify-unfocused-freeze [data-testid="canvas-container"] video {
   display: none !important;
   visibility: hidden !important;
   content-visibility: hidden !important;
 }
 
-/* CRITICAL: Protect audio playback pipeline. Audio element is NEVER hidden or throttled */
-audio {
-  display: inline !important;
+/* CRITICAL: Guarantee media streaming elements are always active, visible, and unthrottled */
+audio,
+video:not([loop]),
+[data-testid="now-playing-bar-container"] {
+  display: flex !important;
   visibility: visible !important;
   content-visibility: visible !important;
 }
