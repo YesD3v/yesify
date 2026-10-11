@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <linearGradient id="darkGrayGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3f3f46"/>
+      <stop offset="60%" stop-color="#27272a"/>
+      <stop offset="100%" stop-color="#18181b"/>
+    </linearGradient>
+  </defs>
+  <!-- White Circle with Shadow -->
+  <circle cx="50" cy="50" r="44" fill="#FFFFFF" filter="url(#shadow)" stroke="#E4E4E7" stroke-width="1"/>
+  <!-- Dark Gray Plus in Middle -->
+  <rect x="28" y="43" width="44" height="14" rx="4" fill="url(#darkGrayGrad)"/>
+  <rect x="43" y="28" width="14" height="44" rx="4" fill="url(#darkGrayGrad)"/>
+</svg>

@@ -1,0 +1,51 @@
+/* Yesify Ultra Lightweight & Background Freeze Engine */
+/* Crafted by yes.dev */
+
+/* --- 1. ULTRA LIGHTWEIGHT MODE --- */
+html.yesify-lightweight *,
+body.yesify-lightweight * {
+  animation: none !important;
+  transition: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  will-change: auto !important;
+}
+
+body.yesify-lightweight .main-view-container,
+body.yesify-lightweight [data-testid="infinite-scroll-list"],
+body.yesify-lightweight [data-testid="lyrics-container"],
+body.yesify-lightweight [data-testid="buddy-feed-container"],
+body.yesify-lightweight [data-testid="canvas-container"],
+body.yesify-lightweight .Root__right-sidebar,
+body.yesify-lightweight video {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+body.yesify-lightweight .Root__main-view {
+  background: #08090b !important;
+}
+
+/* --- 2. UNFOCUSED BACKGROUND FREEZE (Sound-Only) --- */
+/* Completely stops DOM rendering calculations while keeping audio running */
+html.yesify-unfocused-freeze .Root__top-container,
+html.yesify-unfocused-freeze .main-view-container,
+html.yesify-unfocused-freeze .Root__nav-bar,
+html.yesify-unfocused-freeze .Root__right-sidebar,
+html.yesify-unfocused-freeze [data-testid="now-playing-bar-container"] {
+  content-visibility: hidden !important;
+  contain: strict !important;
+}
+
+html.yesify-unfocused-freeze video,
+html.yesify-unfocused-freeze canvas {
+  display: none !important;
+}
+
+/* Audio element is never hidden */
+audio {
+  display: inline !important;
+  visibility: visible !important;
+}

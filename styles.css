@@ -1,0 +1,20 @@
+/* Yesify Spotify Stylesheet - Silent Ad Cleanup */
+/* Crafted by yes.dev */
+
+/* --- 1. AD-HIDING & UI CLEANUP --- */
+button[title="Upgrade to Premium"],
+button[aria-label="Upgrade to Premium"],
+a[href="/download"],
+[data-testid="ad-companion-card"],
+[data-testid="ad-companion-card-tagline"],
+a[data-context-item-type="ad"],
+.GenericModal[aria-label="error-dialog.generic.header"]:has(button[data-encore-id="buttonPrimary"]),
+.GenericModal[aria-label="Something went wrong"]:has(button[data-encore-id="buttonPrimary"]) {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+div[data-testid="playback-duration"] {
+  pointer-events: none !important;
+  user-select: none !important;
+}

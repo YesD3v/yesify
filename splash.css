@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Yesify Splash Stylesheet
+   Crafted by yes.dev
+   ========================================================================== */
+
+#yesify-splash-host {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

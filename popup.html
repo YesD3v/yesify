@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yesify</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-circle">
+          <svg class="brand-plus" viewBox="0 0 20 20" fill="none">
+            <defs>
+              <linearGradient id="brandDarkGray" x1="0" y1="0" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#3f3f46" />
+                <stop offset="60%" stop-color="#27272a" />
+                <stop offset="100%" stop-color="#18181b" />
+              </linearGradient>
+            </defs>
+            <rect x="2" y="7.5" width="16" height="5" rx="1.5" fill="url(#brandDarkGray)" />
+            <rect x="7.5" y="2" width="5" height="16" rx="1.5" fill="url(#brandDarkGray)" />
+          </svg>
+        </div>
+        <div class="brand-text-block">
+          <div class="brand-name"><span class="part-yes">YES</span><span class="part-ify">IFY</span></div>
+          <div class="brand-sub">by yes.dev</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Settings List -->
+    <div class="settings-group">
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Ad Blocker</span>
+          <span class="setting-hint">Silently block audio and visual ads</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-adblock" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Unlocked Mini Player</span>
+          <span class="setting-hint">Resize freely without Premium lock</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-unlock-miniplayer" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Aggressive Stay-On-Top</span>
+          <span class="setting-hint">Prioritize miniplayer over games</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-topmost" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Sound-Only Unfocused</span>
+          <span class="setting-hint">Zero background render when blurred</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-unfocused" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Ultra Lightweight</span>
+          <span class="setting-hint">Disable lyrics, canvas, and video feeds</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-lightweight">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-item">
+        <div class="setting-info">
+          <span class="setting-label">Motion Splash Logo</span>
+          <span class="setting-hint">Show large cinematic intro on launch</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggle-splash" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>yes.dev &bull; v2.1.0</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

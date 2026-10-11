@@ -1,0 +1,128 @@
+{
+  "manifest_version": 3,
+  "name": "Yesify — Spotify Ad Blocker & Unlocked Mini Player",
+  "short_name": "Yesify",
+  "description": "Yesify by yes.dev: Spotify ad blocker, unlocked resizable mini player, aggressive stay-on-top game mode, and ultra-lightweight sound-only background player.",
+  "version": "2.1.0",
+  "author": "yes.dev",
+  "homepage_url": "https://yes.dev",
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "64": "images/icon64.png",
+    "128": "images/icon128.png",
+    "256": "images/icon256.png",
+    "512": "images/icon512.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "64": "images/icon64.png",
+      "128": "images/icon128.png",
+      "256": "images/icon256.png",
+      "512": "images/icon512.png"
+    },
+    "default_title": "Yesify by yes.dev"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://open.spotify.com/*"
+      ],
+      "css": [
+        "splash.css",
+        "styles.css",
+        "lightweight.css"
+      ],
+      "js": [
+        "splash.js",
+        "content_script.js",
+        "lightweight.js",
+        "miniplayer.js",
+        "panel.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "hook.js",
+        "injected/yesify_core.js",
+        "miniplayer.css",
+        "miniplayer_glass.css",
+        "images/*",
+        "web_accessible_resources/*"
+      ],
+      "matches": [
+        "https://open.spotify.com/*"
+      ]
+    }
+  ],
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "scripting",
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_0",
+        "enabled": true,
+        "path": "rules.json"
+      },
+      {
+        "id": "ublock-filters",
+        "enabled": true,
+        "path": "/filters/ublock-filters.json"
+      },
+      {
+        "id": "easylist",
+        "enabled": true,
+        "path": "/filters/easylist.json"
+      },
+      {
+        "id": "easyprivacy",
+        "enabled": true,
+        "path": "/filters/easyprivacy.json"
+      },
+      {
+        "id": "pgl",
+        "enabled": true,
+        "path": "/filters/pgl.json"
+      },
+      {
+        "id": "urlhaus-full",
+        "enabled": true,
+        "path": "/filters/urlhaus-full.json"
+      }
+    ]
+  },
+  "commands": {
+    "open_spotify": {
+      "suggested_key": {
+        "default": "Alt+S",
+        "windows": "Alt+S",
+        "mac": "Alt+S",
+        "chromeos": "Alt+S",
+        "linux": "Alt+S"
+      },
+      "description": "Press Alt + S to open Spotify"
+    }
+  },
+  "host_permissions": [
+    "*://open.spotify.com/*",
+    "*://*.spotify.com/*",
+    "*://*.spotifycdn.net/*"
+  ]
+}

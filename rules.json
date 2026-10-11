@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "Content-Security-Policy",
+          "operation": "set",
+          "value": "default-src * 'unsafe-inline' 'unsafe-eval' 'unsafe-hashes' data: blob:"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://open.spotify.com*"
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "X-XSS-Protection",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://open.spotify.com*"
+    }
+  },
+  {
+    "id": 3,
+    "priority": 100000,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "extensionPath": "/web_accessible_resources/noop-1s.mp4"
+      }
+    },
+    "condition": {
+      "initiatorDomains": [
+        "open.spotify.com"
+      ],
+      "requestDomains": [
+        "2mdn.net",
+        "amillionads.com",
+        "googlesyndication.com",
+        "doubleclick.net"
+      ],
+      "resourceTypes": [
+        "media"
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 100000,
+    "action": {
+      "type": "allow"
+    },
+    "condition": {
+      "urlFilter": "||spclient.wg.spotify.com/",
+      "resourceTypes": [
+        "xmlhttprequest"
+      ],
+      "initiatorDomains": [
+        "spotify.com"
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 100000,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "initiatorDomains": [
+        "open.spotify.com"
+      ],
+      "urlFilter": "||audio-sp-*.spotifycdn.net/audio/interactive/*",
+      "resourceTypes": [
+        "media",
+        "xmlhttprequest"
+      ]
+    }
+  }
+]

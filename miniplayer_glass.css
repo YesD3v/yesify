@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Yesify Native Mini Player - Glassmorphism & Sizing Unlock
+   Crafted by yes.dev
+   ========================================================================== */
+
+/* --- 1. BYPASS SHRINK & "PREMIUM FEATURE" LOCK --- */
+/* Hide all upsell cards, premium upgrade banners, and resize paywalls */
+[data-testid*="upsell" i],
+[data-testid*="premium" i],
+[class*="upsell" i],
+[class*="Upsell" i],
+[class*="premium" i]:not([data-testid="now-playing-widget"] *),
+[aria-label*="Premium" i],
+[aria-label*="Upgrade" i],
+div:has(> a[href*="premium" i]),
+div:has(> button[data-testid*="upgrade" i]),
+div:has(> a[href*="spotify.com/premium"]),
+.GenericModal,
+[role="dialog"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Force the actual music player and controls to stay visible regardless of size */
+[data-testid="now-playing-widget"],
+[data-testid="miniplayer-container"],
+[data-testid="pip-container"],
+[data-testid="pip-view"],
+[data-testid="player-controls"],
+.Root__now-playing-bar {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+html, body, #root, #main {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+/* --- 2. GLASSMORPHISM THEME --- */
+body {
+  background: rgba(14, 17, 24, 0.78) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  box-sizing: border-box !important;
+  padding: 8px 10px !important;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+body:hover {
+  border-color: rgba(255, 215, 0, 0.35) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.15) !important;
+}
+
+/* Transparent backgrounds on Spotify wrappers */
+[data-testid="now-playing-widget"],
+[data-testid="miniplayer-container"],
+.Root__now-playing-bar,
+main, section, div:has(> [data-testid="now-playing-widget"]) {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Glass Album Art */
+[data-testid="CoverSlotCollapsed__container"] img,
+[data-testid="now-playing-widget"] img {
+  border-radius: 8px !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: transform 0.2s ease !important;
+}
+
+/* Typography */
+[data-testid="context-item-info-title"] a,
+[data-testid="track-info-name"] {
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-testid="context-item-info-subtitles"] a,
+[data-testid="track-info-artists"] {
+  color: #9ca3af !important;
+  font-size: 11px !important;
+}
+
+/* Controls Glow */
+button[data-testid="control-button-playpause"] {
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+button[data-testid="control-button-playpause"]:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Progress bar accent */
+[data-testid="playback-progressbar"] div[data-testid="progress-bar-background"] {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* --- 3. MICRO RESIZING ADAPTATIONS (when shrunk ultra-small) --- */
+@media (max-height: 110px) {
+  body {
+    padding: 4px 6px !important;
+  }
+  [data-testid="CoverSlotCollapsed__container"] img,
+  [data-testid="now-playing-widget"] img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  [data-testid="playback-progressbar"] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 210px) {
+  [data-testid="playback-duration"],
+  [data-testid="playback-position"],
+  [data-testid="volume-bar"] {
+    display: none !important;
+  }
+}

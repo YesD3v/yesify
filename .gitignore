@@ -1,0 +1,10 @@
+# Chrome runtime DNR generated files
+_metadata/
+
+# Archives
+*.zip
+*.crx
+
+# OS files
+.DS_Store
+Thumbs.db
