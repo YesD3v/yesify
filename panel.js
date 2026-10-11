@@ -347,7 +347,7 @@
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-title">Sound-Only Unfocused</span>
-              <span class="setting-desc">Freezes 100% of DOM layout and GPU animation loops when blurred for 0% GPU &amp; CPU.</span>
+              <span class="setting-desc">Overrides Lite Mode when blurred: completely freezes background UI (0% GPU/CPU).</span>
             </div>
             <label class="switch">
               <input type="checkbox" id="panel-unfocused" checked>
@@ -358,7 +358,7 @@
           <div class="setting-row">
             <div class="setting-info">
               <span class="setting-title">Ultra Lightweight</span>
-              <span class="setting-desc">Hardcore memory reduction mode (&lt;300MB RAM). Disables video decoders, virtualizes lists, and flattens GPU layers.</span>
+              <span class="setting-desc">Active while focused (&lt;300MB RAM). Automatically superseded by Sound-Only when unfocused.</span>
             </div>
             <label class="switch">
               <input type="checkbox" id="panel-lightweight">

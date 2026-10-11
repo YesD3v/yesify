@@ -87,15 +87,21 @@ body.yesify-lightweight img {
 
 /* --------------------------------------------------------------------------
    2. HARDCORE OUT-OF-FOCUS FREEZE (Sound-Only Mode)
-   --------------------------------------------------------------------------
-   When Spotify is unfocused or in the background:
-   Freezes DOM layout and paints of heavy visual sections.
-   The playback container and media elements remain 100% active and un-occluded.
+   OVERRIDE RULE: Sound-Only Unfocused strictly overrides Ultra Lightweight Mode
+   whenever the tab is blurred or in the background.
    -------------------------------------------------------------------------- */
+
+/* Complete layout and animation freeze across the entire page */
+html.yesify-unfocused-freeze *,
+body.yesify-unfocused-freeze * {
+  animation: none !important;
+  transition: none !important;
+}
 
 /* Occlude background visual containers to halt GPU/CPU paints */
 html.yesify-unfocused-freeze .main-view-container,
 html.yesify-unfocused-freeze .Root__right-sidebar,
+html.yesify-unfocused-freeze .Root__nav-bar,
 html.yesify-unfocused-freeze [data-testid="lyrics-container"],
 html.yesify-unfocused-freeze [data-testid="canvas-container"] {
   content-visibility: hidden !important;

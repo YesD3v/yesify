@@ -129,6 +129,7 @@
 
   // -------------------------------------------------------------------------
   // 2. HARDCORE OUT-OF-FOCUS FREEZE (Sound-Only Mode)
+  // OVERRIDE: Sound-Only Unfocused overrides Lite Mode when tab is blurred!
   // -------------------------------------------------------------------------
   function checkFocusState() {
     var hasFocus = typeof document.hasFocus === "function" ? document.hasFocus() : true;
@@ -138,7 +139,10 @@
     if (!focused && isSoundOnlyUnfocusedEnabled) {
       if (!isCurrentlyUnfocused) {
         isCurrentlyUnfocused = true;
+        // Sound-Only Unfocused overrides Lite Mode
         document.documentElement.classList.add("yesify-unfocused-freeze");
+        // Suspend Lite Mode observers so zero JS overhead runs in background
+        stopImageObserver();
         pauseCanvasVideos();
         notifyMainWorldFreeze(true);
       }
@@ -147,6 +151,11 @@
         isCurrentlyUnfocused = false;
         document.documentElement.classList.remove("yesify-unfocused-freeze");
         notifyMainWorldFreeze(false);
+        // When focus returns, re-engage Lite Mode if enabled
+        if (isLightweightEnabled) {
+          optimizeExistingImages();
+          startImageObserver();
+        }
       }
     }
   }
