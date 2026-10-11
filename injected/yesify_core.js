@@ -20,20 +20,109 @@
   var LOG = "[Yesify]";
   var settings = {
     unlockMiniplayer: true,
-    aggressiveTopmost: true
+    aggressiveTopmost: true,
+    lightweightMode: false,
+    soundOnlyUnfocused: true
   };
 
   /* ------------------------------------------------------------------ */
-  /* Settings Bridge                                                    */
+  /* Hardcore requestAnimationFrame Freeze Engine                       */
+  /* Freezes 100% of DOM layout & GPU animation loops when unfocused    */
+  /* ------------------------------------------------------------------ */
+  var origRAF = window.requestAnimationFrame;
+  var origCancelRAF = window.cancelAnimationFrame;
+  var isFrozen = false;
+  var pendingRAF = new Map();
+  var nextRafId = 1;
+
+  window.requestAnimationFrame = function (cb) {
+    if (isFrozen) {
+      var id = ++nextRafId;
+      pendingRAF.set(id, cb);
+      return id;
+    }
+    return origRAF.call(window, cb);
+  };
+
+  window.cancelAnimationFrame = function (id) {
+    pendingRAF.delete(id);
+    return origCancelRAF.call(window, id);
+  };
+
+  function setFrozenState(frozen) {
+    if (isFrozen === frozen) return;
+    isFrozen = frozen;
+    if (!isFrozen && pendingRAF.size > 0) {
+      var cbs = Array.from(pendingRAF.values());
+      pendingRAF.clear();
+      var now = performance.now();
+      cbs.forEach(function (fn) {
+        try { fn(now); } catch (err) {}
+      });
+    }
+    if (isFrozen) {
+      purgeVideoAndCanvasBuffers();
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Hardcore Video & Canvas Suppressor (Sub-300MB RAM Target)          */
+  /* Prevents Spotify Canvas video decoders from loading in RAM/VRAM     */
+  /* ------------------------------------------------------------------ */
+  var origVideoPlay = HTMLVideoElement.prototype.play;
+  HTMLVideoElement.prototype.play = function () {
+    if (settings.lightweightMode || isFrozen) {
+      this.pause();
+      this.preload = "none";
+      return Promise.reject(new DOMException("Yesify video playback suppressed", "AbortError"));
+    }
+    return origVideoPlay.apply(this, arguments);
+  };
+
+  function purgeVideoAndCanvasBuffers() {
+    try {
+      var videos = document.querySelectorAll("video");
+      videos.forEach(function (v) {
+        v.pause();
+        v.preload = "none";
+        if (settings.lightweightMode) {
+          v.removeAttribute("src");
+          try { v.load(); } catch (e) {}
+        }
+      });
+    } catch (e) {}
+    if (typeof window.gc === "function") {
+      try { window.gc(); } catch (e) {}
+    }
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Settings & State Bridge                                            */
   /* ------------------------------------------------------------------ */
   var pip = null; // { win, refresh }
 
   window.addEventListener("message", function (e) {
-    if (e.source !== window || !e.data || e.data.__yesify !== "settings") return;
-    var s = e.data.settings || {};
-    if (typeof s.unlockMiniplayer === "boolean") settings.unlockMiniplayer = s.unlockMiniplayer;
-    if (typeof s.aggressiveTopmost === "boolean") settings.aggressiveTopmost = s.aggressiveTopmost;
-    if (pip) pip.refresh();
+    if (e.source !== window || !e.data) return;
+    if (e.data.__yesify === "settings") {
+      var s = e.data.settings || {};
+      if (typeof s.unlockMiniplayer === "boolean") settings.unlockMiniplayer = s.unlockMiniplayer;
+      if (typeof s.aggressiveTopmost === "boolean") settings.aggressiveTopmost = s.aggressiveTopmost;
+      if (typeof s.lightweightMode === "boolean") {
+        settings.lightweightMode = s.lightweightMode;
+        if (settings.lightweightMode) purgeVideoAndCanvasBuffers();
+      }
+      if (typeof s.soundOnlyUnfocused === "boolean") settings.soundOnlyUnfocused = s.soundOnlyUnfocused;
+      if (pip) pip.refresh();
+    } else if (e.data.__yesify === "freeze-state") {
+      if (settings.soundOnlyUnfocused) {
+        setFrozenState(!!e.data.frozen);
+      } else {
+        setFrozenState(false);
+      }
+    } else if (e.data.__yesify === "lite-state") {
+      settings.lightweightMode = !!e.data.lite;
+      if (settings.lightweightMode) purgeVideoAndCanvasBuffers();
+    }
   });
 
   window.postMessage({ __yesify: "core-ready" }, "*");

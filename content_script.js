@@ -39,13 +39,17 @@
   function sendSettingsToPage() {
     chrome.storage.local.get({
       unlockMiniplayer: true,
-      aggressiveTopmost: true
+      aggressiveTopmost: true,
+      lightweightMode: false,
+      soundOnlyUnfocused: true
     }, function (data) {
       window.postMessage({
         __yesify: "settings",
         settings: {
           unlockMiniplayer: data.unlockMiniplayer !== false,
-          aggressiveTopmost: data.aggressiveTopmost !== false
+          aggressiveTopmost: data.aggressiveTopmost !== false,
+          lightweightMode: !!data.lightweightMode,
+          soundOnlyUnfocused: data.soundOnlyUnfocused !== false
         }
       }, "*");
     });
@@ -54,7 +58,7 @@
   sendSettingsToPage();
 
   chrome.storage.onChanged.addListener(function (changes) {
-    if (changes.unlockMiniplayer || changes.aggressiveTopmost) {
+    if (changes.unlockMiniplayer || changes.aggressiveTopmost || changes.lightweightMode || changes.soundOnlyUnfocused) {
       sendSettingsToPage();
     }
   });
