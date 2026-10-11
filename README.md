@@ -1,6 +1,6 @@
 # Yesify (by yes.dev)
 
-> **The Ultimate Spotify Experience** — Merging Dhanur's Blockify ad-blocking engine with an unlocked resizable Mini Player, aggressive stay-on-top Game Mode for Minecraft, ultra-lightweight sound-only background player, and a custom motion animation loading logo.
+> **The Ultimate Spotify Experience** - Merging Dhanur's Blockify ad-blocking engine with an unlocked resizable Mini Player, aggressive stay-on-top Game Mode for Minecraft, ultra-lightweight sound-only background player, and a custom motion animation loading logo.
 
 ---
 
